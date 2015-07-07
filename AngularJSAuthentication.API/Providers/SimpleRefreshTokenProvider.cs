@@ -1,12 +1,7 @@
-﻿using AngularJSAuthentication.API.Entities;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Infrastructure;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using System.Web;
+using AngularJSAuthentication.API.Entities;
+using Microsoft.Owin.Security.Infrastructure;
 
 namespace AngularJSAuthentication.API.Providers
 {
@@ -24,7 +19,7 @@ namespace AngularJSAuthentication.API.Providers
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var _repo = new AuthRepository())
             {
                 var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
                

@@ -16,9 +16,9 @@ namespace AngularJSAuthentication.API.Providers
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
 
-            string clientId = string.Empty;
-            string clientSecret = string.Empty;
-            Client client = null;
+            string clientId;
+            string clientSecret;
+            Client client;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
             {
@@ -30,13 +30,13 @@ namespace AngularJSAuthentication.API.Providers
                 //Remove the comments from the below line context.SetError, and invalidate context 
                 //if you want to force sending clientId/secrects once obtain access tokens. 
                 context.Validated();
-                //context.SetError("invalid_clientId", "ClientId should be sent.");
+                context.SetError("invalid_clientId", "ClientId should be sent.");
                 return Task.FromResult<object>(null);
             }
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var repo = new AuthRepository())
             {
-                client = _repo.FindClient(context.ClientId);
+                client = repo.FindClient(context.ClientId);
             }
 
             if (client == null)
@@ -68,8 +68,8 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            context.OwinContext.Set<string>("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
+            context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
             return Task.FromResult<object>(null);

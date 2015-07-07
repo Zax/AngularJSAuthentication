@@ -39,8 +39,9 @@ namespace AngularJSAuthentication.API
 
         public async Task<IdentityUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
-
+	        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+		        return null;
+			IdentityUser user = await _userManager.FindAsync(userName, password);
             return user;
         }
 
@@ -54,7 +55,7 @@ namespace AngularJSAuthentication.API
         public async Task<bool> AddRefreshToken(RefreshToken token)
         {
 
-           var existingToken = _ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
+           var existingToken = _ctx.RefreshTokens.SingleOrDefault(r => r.Subject == token.Subject && r.ClientId == token.ClientId);
 
            if (existingToken != null)
            {

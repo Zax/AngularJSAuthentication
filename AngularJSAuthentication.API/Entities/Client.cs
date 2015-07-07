@@ -1,9 +1,5 @@
-﻿using AngularJSAuthentication.API.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
+using AngularJSAuthentication.API.Models;
 
 namespace AngularJSAuthentication.API.Entities
 {
